@@ -2,8 +2,8 @@ name: Scarica dati Super Color Game ogni 72 ore
 
 on:
   schedule:
-    - cron: "0 */72 * * *"  # ogni 72 ore
-  workflow_dispatch:
+    - cron: "0 0 */3 * *"  # ogni 3 giorni (equivale a 72 ore)
+  workflow_dispatch:        # consente di avviarlo anche manualmente
 
 jobs:
   update:
