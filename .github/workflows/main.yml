@@ -33,6 +33,6 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "GitHub Actions"
-          git add risultati/ last_run.txt
+          git add risultati/
           git commit -m "Aggiornamento risultati automatico $(date '+%Y-%m-%d %H:%M:%S')" || echo "Nessun cambiamento da committare"
           git push
