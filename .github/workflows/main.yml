@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: "0 0 */3 * *"  # ogni 3 giorni (equivale a 72 ore)
   workflow_dispatch:        # consente di avviarlo anche manualmente
+  
+permissions:
+  contents: write
 
 jobs:
   update:
