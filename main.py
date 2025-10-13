@@ -2,6 +2,7 @@ import requests
 import time
 import json
 from datetime import datetime
+import os
 
 base_url = "https://api.casinoscores.com/svc-evolution-game-events/api/supercolorgame"
 headers = {
@@ -27,19 +28,18 @@ params_base = {
 }
 
 numero_pagine = 344
+cartella_risultati = "risultati"
+os.makedirs(cartella_risultati, exist_ok=True)
 
 def scarica_dati():
     risultati = []
-
     for page in range(numero_pagine):
         params = params_base.copy()
         params["page"] = page
-
         try:
             response = requests.get(base_url, headers=headers, params=params)
             response.raise_for_status()
             dati = response.json()
-
             for elemento in dati:
                 result = elemento.get("data", {}).get("result", {})
                 first = result.get("first", "")
@@ -50,24 +50,20 @@ def scarica_dati():
                     "second": second,
                     "third": third
                 })
-
         except requests.RequestException as e:
             print(f"Errore pagina {page}: {e}")
-
         time.sleep(0.5)
-
     return risultati
 
-while True:
-    print("Avvio download dati nuovi...")
-    dati = scarica_dati()
+# 🔹 Esegue solo una volta (GitHub lo riavvia ogni 72h)
+print("📥 Avvio download dati nuovi...")
+dati = scarica_dati()
 
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
-    nome_file = f"respondecolor_{timestamp}.json"
+timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
+nome_file = f"respondecolor_{timestamp}.json"
+percorso_file = os.path.join(cartella_risultati, nome_file)
 
-    with open(nome_file, "w", encoding="utf-8") as f:
-        json.dump(dati, f, ensure_ascii=False, indent=2)
+with open(percorso_file, "w", encoding="utf-8") as f:
+    json.dump(dati, f, ensure_ascii=False, indent=2)
 
-    print(f"Download completato. File salvato come {nome_file}.")
-    print("In attesa di 72 ore...")
-    time.sleep(72 * 60 * 60)  # 72 ore
+print(f"✅ File salvato in {percorso_file}")
