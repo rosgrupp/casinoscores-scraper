@@ -31,8 +31,8 @@ jobs:
 
       - name: Commit and push results (if changed)
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add risultato_*.json last_run.txt || true
-          git commit -m "Aggiornamento dati $(date -u '+%Y-%m-%d %H:%M:%S')" || echo "Nessun cambiamento da committare"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Actions"
+          git add risultati/ last_run.txt
+          git commit -m "Aggiornamento risultati automatico $(date '+%Y-%m-%d %H:%M:%S')" || echo "Nessun cambiamento da committare"
           git push
